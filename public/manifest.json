@@ -1,0 +1,61 @@
+{
+  "manifest_version": 3,
+  "name": "Amazon Order Cleaner",
+  "version": "1.0.0",
+  "description": "Nascondi ordini dalla cronologia di Amazon per una migliore organizzazione",
+  "permissions": [
+    "scripting",
+    "tabs",
+    "activeTab",
+    "sidePanel",
+    "commands",
+    "storage",
+    "contextMenus"
+  ],
+  "host_permissions": [
+    "http://*/*", "https://*/*",
+    "https://www.amazon.it/*",
+    "https://www.amazon.com/*",
+    "https://www.amazon.co.uk/*",
+    "https://www.amazon.de/*",
+    "https://www.amazon.fr/*",
+    "https://www.amazon.es/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.amazon.it/*",
+        "https://www.amazon.it/gp/css/order-history*",
+        "https://www.amazon.com/gp/css/order-history*",
+        "https://www.amazon.co.uk/gp/css/order-history*",
+        "https://www.amazon.de/gp/css/order-history*",
+        "https://www.amazon.fr/gp/css/order-history*",
+        "https://www.amazon.es/gp/css/order-history*"
+      ],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "type": "module"
+    }
+  ],
+  "action": {
+    "default_popup": "index.html",
+    "default_title": "Amazon Order Cleaner"
+  },
+  "side_panel": {
+    "default_path": "index.html"
+  },
+  "icons": {
+    "16": "./assets/vue.svg",
+    "48": "./assets/vue.svg",
+    "128": "./assets/vue.svg"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["assets/*"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; style-src 'self' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com;"
+  }
+}

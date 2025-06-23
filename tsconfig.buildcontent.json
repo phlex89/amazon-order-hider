@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "none",
+    "outDir": "./standalone",
+    "strict": true,
+    "esModuleInterop": true,
+    "removeComments": true
+  },
+  "include": ["src/content/content.ts"]
+}

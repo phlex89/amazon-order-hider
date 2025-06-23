@@ -1,0 +1,31 @@
+{
+  "name": "amazon-order-hider",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build && npm run postbuild",
+    "build:content": "esbuild src/content/content.ts --bundle --outfile=dist/content.js --format=iife --target=es6 --platform=browser",
+    "preview": "vite preview",
+    "postbuild": "npm run build:content && cp ./public/manifest.json ./dist/manifest.json && mkdir -p ./dist/assets && cp -R ./src/assets/* ./dist/assets/"
+  },
+  "dependencies": {
+    "date-fns": "^4.1.0",
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.1"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.326",
+    "@vitejs/plugin-vue": "^5.2.3",
+    "@vue/tsconfig": "^0.7.0",
+    "esbuild": "^0.25.5",
+    "eslint": "^9.29.0",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-vue": "^10.2.0",
+    "prettier": "3.5.3",
+    "typescript": "~5.8.3",
+    "vite": "^6.3.5",
+    "vue-tsc": "^2.2.8"
+  }
+}

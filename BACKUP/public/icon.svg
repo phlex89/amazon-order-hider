@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <!-- Background circle -->
+  <circle cx="64" cy="64" r="60" fill="#ff6b35" stroke="#fff" stroke-width="4"/>
+  
+  <!-- Eye icon (hide/show concept) -->
+  <g fill="#fff">
+    <!-- Eye outline -->
+    <ellipse cx="64" cy="64" rx="30" ry="18" fill="none" stroke="#fff" stroke-width="4"/>
+    
+    <!-- Eye pupil -->
+    <circle cx="64" cy="64" r="8" fill="#fff"/>
+    
+    <!-- Slash through eye (hidden concept) -->
+    <line x1="40" y1="40" x2="88" y2="88" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+  </g>
+  
+  <!-- Amazon-style arrow -->
+  <path d="M35 95 Q64 105 93 95" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <polygon points="88,90 93,95 88,100" fill="#fff"/>
+</svg> 

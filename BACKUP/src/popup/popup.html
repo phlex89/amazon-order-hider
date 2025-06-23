@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Amazon Order Cleaner</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 380px;
+      min-height: 400px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f8f9fa;
+      color: #333;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #ff9500 0%, #ff6b35 100%);
+      color: white;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .header h1 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .header p {
+      font-size: 12px;
+      opacity: 0.9;
+    }
+
+    .content {
+      padding: 20px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .stat-number {
+      font-size: 24px;
+      font-weight: 700;
+      color: #ff6b35;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: #666;
+      margin-top: 5px;
+    }
+
+    .controls {
+      background: white;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+
+    .control-group {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .control-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .control-label {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .toggle-switch {
+      position: relative;
+      width: 50px;
+      height: 26px;
+      background: #ccc;
+      border-radius: 13px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .toggle-switch.active {
+      background: #ff6b35;
+    }
+
+    .toggle-switch::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 22px;
+      height: 22px;
+      background: white;
+      border-radius: 50%;
+      transition: transform 0.3s;
+    }
+
+    .toggle-switch.active::after {
+      transform: translateX(24px);
+    }
+
+    .hidden-orders {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .hidden-orders-header {
+      padding: 15px 20px;
+      border-bottom: 1px solid #eee;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .hidden-order {
+      padding: 12px 20px;
+      border-bottom: 1px solid #f0f0f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .hidden-order:last-child {
+      border-bottom: none;
+    }
+
+    .order-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .order-title {
+      font-size: 13px;
+      font-weight: 500;
+      color: #333;
+      margin-bottom: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .order-meta {
+      font-size: 11px;
+      color: #666;
+    }
+
+    .restore-btn {
+      background: #28a745;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 11px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .restore-btn:hover {
+      background: #218838;
+    }
+
+    .clear-all-btn {
+      width: 100%;
+      background: #dc3545;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 15px;
+    }
+
+    .clear-all-btn:hover {
+      background: #c82333;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: #666;
+    }
+
+    .empty-state-icon {
+      font-size: 48px;
+      margin-bottom: 15px;
+      opacity: 0.5;
+    }
+
+    .loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+    }
+
+    .spinner {
+      width: 30px;
+      height: 30px;
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #ff6b35;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Amazon Order Cleaner</h1>
+    <p>Gestisci i tuoi ordini nascosti</p>
+  </div>
+
+  <div class="content">
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-number" id="totalOrders">0</div>
+        <div class="stat-label">Ordini nascosti</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="statusText">OFF</div>
+        <div class="stat-label">Stato estensione</div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <div class="control-group">
+        <div class="control-label">Abilita estensione</div>
+        <div class="toggle-switch" id="enableToggle"></div>
+      </div>
+      <div class="control-group">
+        <div class="control-label">Mostra ordini nascosti</div>
+        <div class="toggle-switch" id="showHiddenToggle"></div>
+      </div>
+    </div>
+
+    <div class="hidden-orders">
+      <div class="hidden-orders-header">
+        Ordini nascosti
+      </div>
+      <div id="hiddenOrdersList">
+        <div class="loading">
+          <div class="spinner"></div>
+        </div>
+      </div>
+    </div>
+
+    <button class="clear-all-btn" id="clearAllBtn">
+      Ripristina tutti gli ordini
+    </button>
+  </div>
+
+  <div id="app"></div>
+  <script type="module" src="popup.ts"></script>
+</body>
+</html> 
