@@ -1,9 +1,9 @@
 <script setup lang="ts">
-  import { ref, onMounted } from 'vue';
+  import HiddenOrderItem from '@/components/HiddenOrderItem.vue';
+  import ToggleSwitch from '@/components/ToggleSwitch.vue';
   import type { HiddenOrder } from '@/types';
   import { storage } from '@/utils/storage';
-  import ToggleSwitch from '@/components/ToggleSwitch.vue';
-  import HiddenOrderItem from '@/components/HiddenOrderItem.vue';
+  import { onMounted, ref } from 'vue';
 
   const loading = ref(true);
   const isEnabled = ref(true);
@@ -87,12 +87,12 @@
     <!-- Stats -->
     <div class="stats">
       <div class="stat-card">
-        <div class="stat-number">{{ hiddenOrders.length }}</div>
-        <div class="stat-label">Ordini nascosti</div>
-      </div>
-      <div class="stat-card">
         <div class="stat-number">{{ isEnabled ? 'ON' : 'OFF' }}</div>
         <div class="stat-label">Stato estensione</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">{{ hiddenOrders.length }}</div>
+        <div class="stat-label">Ordini nascosti</div>
       </div>
     </div>
 
@@ -124,26 +124,23 @@
           >({{ hiddenOrders.length }})</span
         >
       </div>
+      <div v-if="loading" class="loading">
+        <div class="spinner"></div>
+      </div>
 
-      <div class="hidden-orders-content">
-        <div v-if="loading" class="loading">
-          <div class="spinner"></div>
-        </div>
+      <div v-else-if="hiddenOrders.length === 0" class="empty-state">
+        <div class="empty-state-icon">📦</div>
+        <p>Nessun ordine nascosto</p>
+        <small>Vai su Amazon e nascondi un ordine per vederlo qui</small>
+      </div>
 
-        <div v-else-if="hiddenOrders.length === 0" class="empty-state">
-          <div class="empty-state-icon">📦</div>
-          <p>Nessun ordine nascosto</p>
-          <small>Vai su Amazon e nascondi alcuni ordini per vederli qui</small>
-        </div>
-
-        <div v-else class="orders-list">
-          <HiddenOrderItem
-            v-for="order in hiddenOrders"
-            :key="order.id"
-            :order="order"
-            @restore="handleRestoreOrder"
-          />
-        </div>
+      <div v-else class="orders-list">
+        <HiddenOrderItem
+          v-for="order in hiddenOrders"
+          :key="order.id"
+          :order="order"
+          @restore="handleRestoreOrder"
+        />
       </div>
     </div>
 
@@ -161,7 +158,7 @@
 
 <style scoped>
   .popup-container {
-    width: 100%;
+    width: 500px;
     height: 100%;
     padding: 20px;
   }
@@ -221,7 +218,7 @@
     background: white;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    max-height: 300px;
+    max-height: 260px;
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -245,7 +242,6 @@
 
   .hidden-orders-content {
     flex: 1;
-    overflow-y: auto;
   }
 
   .empty-state {
@@ -281,7 +277,7 @@
     width: 30px;
     height: 30px;
     border: 3px solid #f3f3f3;
-    border-top: 3px solid #ff6b35;
+    border-top: 3px solid #46b3cb;
     border-radius: 50%;
     animation: spin 1s linear infinite;
   }
@@ -302,7 +298,7 @@
 
   .clear-all-btn {
     width: 100%;
-    background: #dc3545;
+    background: #46b3cb;
     color: white;
     border: none;
     padding: 12px;
@@ -315,7 +311,7 @@
   }
 
   .clear-all-btn:hover:not(:disabled) {
-    background: #c82333;
+    background: #46b3cb;
   }
 
   .clear-all-btn:disabled {
@@ -323,4 +319,3 @@
     cursor: not-allowed;
   }
 </style>
-Ø

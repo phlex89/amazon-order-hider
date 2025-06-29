@@ -88,7 +88,11 @@ class AmazonOrderCleaner {
   }
 
   private processOrder(orderElement: OrderElement): void {
-    if (!this.isEnabled) return
+    if (!this.isEnabled) {
+      // Se l'estensione è disabilitata, ripristina l'ordine allo stato normale
+      this.restoreOrderToNormalState(orderElement)
+      return
+    }
 
     const orderData = AmazonSelectors.extractOrderData(orderElement)
     if (!orderData) return
@@ -110,14 +114,14 @@ class AmazonOrderCleaner {
 
     const button = document.createElement('button')
     button.className = 'aoc-hide-button'
-    button.textContent = '👁️ Nascondi'
+    button.textContent = 'Nascondi questo ordine'
     button.title = 'Nascondi questo ordine dalla cronologia'
     button.type = 'button'
     
     // Stili inline per integrazione con Amazon
     button.style.cssText = `
-      background: #ffd814;
-      border: 1px solid #fcd200;
+      background: #8fc8e3;
+      border: 1px solid #3991a4;
       border-radius: 8px;
       color: #0f1111;
       cursor: pointer;
@@ -132,17 +136,20 @@ class AmazonOrderCleaner {
       white-space: nowrap;
       min-width: 80px;
       transition: all 0.2s ease;
+      outline: none;
     `
+    
+
 
     // Hover effects
     button.addEventListener('mouseenter', () => {
-      button.style.backgroundColor = '#f7ca00'
-      button.style.borderColor = '#f2c200'
+      button.style.backgroundColor = '#8fc8e3'
+      button.style.borderColor = '#3991a4'
     })
 
     button.addEventListener('mouseleave', () => {
-      button.style.backgroundColor = '#ffd814'
-      button.style.borderColor = '#fcd200'
+      button.style.backgroundColor = '#8fc8e3'
+      button.style.borderColor = '#3991a4'
     })
 
     button.addEventListener('click', async (e) => {
@@ -212,6 +219,7 @@ class AmazonOrderCleaner {
         orderElement.style.opacity = '0.5'
         orderElement.style.filter = 'grayscale(50%)'
         orderElement.setAttribute('data-aoc-status', 'temporarily-shown')
+        orderElement.style.pointerEvents = 'none'
         break
       case OrderStatus.VISIBLE:
       default:
@@ -221,6 +229,32 @@ class AmazonOrderCleaner {
         orderElement.setAttribute('data-aoc-status', 'visible')
         break
     }
+  }
+
+  private restoreOrderToNormalState(orderElement: OrderElement): void {
+    // Rimuovi tutti gli attributi e stili aggiunti dall'estensione
+    orderElement.removeAttribute('data-aoc-status')
+    orderElement.style.display = ''
+    orderElement.style.opacity = ''
+    orderElement.style.filter = ''
+    orderElement.style.pointerEvents = ''
+    
+    // Rimuovi il pulsante nascosto se esiste
+    const hideButton = orderElement.querySelector('.aoc-hide-button')
+    if (hideButton) {
+      hideButton.remove()
+    }
+    
+    // Rimuovi il container del pulsante se è vuoto
+    const buttonContainer = orderElement.querySelector('.aoc-button-container')
+    if (buttonContainer && !buttonContainer.hasChildNodes()) {
+      buttonContainer.remove()
+    }
+  }
+
+  private restoreAllOrdersToNormalState(): void {
+    const orders = AmazonSelectors.findOrderElements()
+    orders.forEach(order => this.restoreOrderToNormalState(order))
   }
 
   private showNotification(message: string, type: 'success' | 'error' = 'success'): void {
@@ -265,7 +299,13 @@ class AmazonOrderCleaner {
     chrome.storage.onChanged.addListener((changes) => {
       if (changes.isEnabled) {
         this.isEnabled = changes.isEnabled.newValue
-        this.processExistingOrders()
+        if (this.isEnabled) {
+          // Estensione abilitata: processa tutti gli ordini
+          this.processExistingOrders()
+        } else {
+          // Estensione disabilitata: ripristina tutti gli ordini allo stato normale
+          this.restoreAllOrdersToNormalState()
+        }
       }
       
       if (changes.showHidden) {

@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es5",
     "module": "none",
-    "outDir": "./standalone",
+    "outDir": "./dist",
     "strict": true,
     "esModuleInterop": true,
     "removeComments": true

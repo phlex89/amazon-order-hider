@@ -2,39 +2,48 @@
 
 /* Pulsante Nascondi */
 .aoc-hide-button {
-  background: #ffd814 !important;
-  border: 1px solid #fcd200 !important;
-  border-radius: 8px !important;
+  background: #cdf3ff !important;
+  border: 1px solid #1e6989 !important;
+  border-radius: 100px !important;
   color: #0f1111 !important;
   cursor: pointer !important;
   font-size: 13px !important;
   font-weight: 400 !important;
   line-height: 29px !important;
-  padding: 0 10px 0 11px !important;
+  padding: 0px 10px 0px 11px !important;
   text-align: center !important;
   text-decoration: none !important;
   vertical-align: middle !important;
   margin-left: 8px !important;
   white-space: nowrap !important;
-  min-width: 80px !important;
+  min-width: auto !important;
+  background-color: #46b3cb !important;
   transition: all 0.2s ease !important;
   font-family: "Amazon Ember", Arial, sans-serif !important;
   box-sizing: border-box !important;
+  outline: none !important;
+
+  display: flex !important;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  justify-self: center;
+  top: -15px !important;
+  outline: none !important;
+  width: 28% !important;
+  font-size: 13px !important;
+  height: 34px !important;
 }
 
 .aoc-hide-button:hover {
-  background: #f7ca00 !important;
-  border-color: #f2c200 !important;
+  background: #cdf3ff !important;
+  border-color: #1e6989 !important;
 }
 
 .aoc-hide-button:active {
-  background: #f0b800 !important;
-  border-color: #e6a900 !important;
-}
-
-.aoc-hide-button:focus {
-  outline: 2px solid #0066cc !important;
-  outline-offset: 2px !important;
+  background: #cdf3ff !important;
+  border-color: #1e6989 !important;
 }
 
 /* Container per il pulsante */
@@ -55,21 +64,37 @@
   opacity: 0.5 !important;
   filter: grayscale(50%) !important;
   transition: opacity 0.3s ease, filter 0.3s ease !important;
+  pointer-events: none !important;
+}
+
+/* Hide the hide button for temporarily shown (hidden) orders */
+[data-aoc-status="temporarily-shown"] .aoc-hide-button {
+  visibility: hidden !important;
 }
 
 [data-aoc-status="temporarily-shown"]::before {
-  content: "👁️ NASCOSTO" !important;
+  content: "Nascosto" !important;
   position: absolute !important;
-  top: 10px !important;
-  left: 10px !important;
+  top: 70px !important;
+  left: 25px !important;
   background: rgba(255, 107, 53, 0.9) !important;
   color: white !important;
-  padding: 4px 8px !important;
-  border-radius: 4px !important;
-  font-size: 11px !important;
-  font-weight: 600 !important;
+  padding: 0px 10px 0px 11px !important;
+  border-radius: 100px !important;
   z-index: 1000 !important;
   pointer-events: none !important;
+  box-sizing: border-box !important;
+
+  display: flex !important;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  justify-self: center;
+  outline: none !important;
+  width: 150px !important;
+  font-size: 13px !important;
+  height: 34px !important;
 }
 
 /* Notifiche */
@@ -84,7 +109,7 @@
   font-size: 14px !important;
   font-weight: 500 !important;
   z-index: 10000 !important;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
   animation: aoc-slideIn 0.3s ease-out !important;
   font-family: "Amazon Ember", Arial, sans-serif !important;
   max-width: 300px !important;
@@ -101,6 +126,7 @@
     transform: translateX(100%) !important;
     opacity: 0 !important;
   }
+
   to {
     transform: translateX(0) !important;
     opacity: 1 !important;
@@ -115,7 +141,7 @@
     min-width: 70px !important;
     line-height: 26px !important;
   }
-  
+
   .aoc-notification {
     top: 10px !important;
     right: 10px !important;
@@ -128,25 +154,20 @@
 /* Integrazione con Amazon Dark Mode (se presente) */
 @media (prefers-color-scheme: dark) {
   .aoc-hide-button {
-    background: #ff9900 !important;
-    border-color: #e68900 !important;
+    background: #cdf3ff !important;
+    border-color: #1e6989 !important;
     color: #000 !important;
   }
-  
-  .aoc-hide-button:hover {
-    background: #e68900 !important;
-    border-color: #cc7700 !important;
-  }
-}
 
-/* Accessibilità */
-.aoc-hide-button:focus-visible {
-  outline: 2px solid #0066cc !important;
-  outline-offset: 2px !important;
+  .aoc-hide-button:hover {
+    background: #cdf3ff !important;
+    border-color: #1e6989 !important;
+  }
 }
 
 /* Riduzione movimento per utenti con preferenze di accessibilità */
 @media (prefers-reduced-motion: reduce) {
+
   .aoc-hide-button,
   [data-aoc-status="temporarily-shown"],
   .aoc-notification {
@@ -165,4 +186,4 @@
 
 .aoc-notification {
   position: fixed !important;
-} 
+}

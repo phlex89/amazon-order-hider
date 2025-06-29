@@ -16,9 +16,7 @@
 
 <template>
   <div class="app-container" v-if="!loading">
-    <main class="app-main">
       <router-view />
-    </main>
   </div>
   <div v-else>
     <div class="loading-container">
@@ -38,17 +36,7 @@
 
 <style scoped>
   .app-container {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    width: 100%;
     background-color: #f8fafc;
-  }
-
-  .app-main {
-    flex-grow: 1;
-    overflow-y: auto;
-    padding: 0;
   }
 
   @keyframes spin {

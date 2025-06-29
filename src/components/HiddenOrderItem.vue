@@ -5,9 +5,9 @@
         {{ order.title }}
       </div>
       <div class="order-meta">
-        <span class="order-date">{{ formatDate(order.date) }}</span>
-        <span v-if="order.price" class="order-price"> • {{ order.price }}</span>
-        <span class="hidden-date"> • Nascosto {{ formatHiddenDate(order.hiddenAt) }}</span>
+        <span class="order-date">Ordinato il: {{ formatDate(order.date) }}</span></br>
+        <span v-if="order.price" class="order-price">Prezzo: {{ order.price }}</span></br>
+        <span class="hidden-date">Nascosto il: {{ formatHiddenDate(order.hiddenAt) }}</span>
       </div>
     </div>
     
@@ -16,7 +16,7 @@
       @click="handleRestore"
       :title="`Ripristina ordine: ${order.title}`"
     >
-      ↻ Ripristina
+      <i class="fas fa-undo"></i>
     </button>
   </div>
 </template>
@@ -105,6 +105,9 @@ function formatHiddenDate(dateString: string): string {
 }
 
 .order-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
   font-size: 11px;
   color: #666;
   line-height: 1.2;
@@ -127,23 +130,27 @@ function formatHiddenDate(dateString: string): string {
   background: #28a745;
   color: white;
   border: none;
-  padding: 6px 12px;
-  border-radius: 4px;
-  font-size: 11px;
-  font-weight: 500;
+  padding: 8px;
+  border-radius: 50%;
+  font-size: 16px;
+  font-weight: bold;
   cursor: pointer;
   transition: all 0.2s ease;
-  white-space: nowrap;
-  min-width: fit-content;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
 }
 
 .restore-btn:hover {
   background: #218838;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(40, 167, 69, 0.2);
+  transform: translateY(-1px) scale(1.05);
+  box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
 }
 
 .restore-btn:active {
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
 }
 </style> 

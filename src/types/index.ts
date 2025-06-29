@@ -36,5 +36,6 @@ export interface AmazonOrderData {
   title: string
   date: string
   price?: string
+  deliveryStatus?: string
   element: OrderElement
 } 
