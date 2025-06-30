@@ -342,17 +342,3 @@ if (document.readyState === 'loading') {
 window.addEventListener('beforeunload', () => {
   // Cleanup se necessario
 })
-
-// TEST
-export default window.onload = () => {
-  const textElement = document.createElement("h1");
-
-  textElement.style.color = "red";
-  textElement.style.position = "absolute";
-  textElement.style.zIndex = "10000";
-  textElement.style.top = "0";
-  textElement.style.right = "1";
-  textElement.textContent = "TEST";
-
-  document.body.appendChild(textElement);
-};

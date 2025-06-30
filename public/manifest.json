@@ -4,7 +4,6 @@
   "version": "1.0.0",
   "description": "Nascondi ordini dalla cronologia di Amazon per una migliore organizzazione",
   "permissions": [
-    "activeTab",
     "storage"
   ],
   "host_permissions": [
